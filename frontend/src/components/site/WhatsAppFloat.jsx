@@ -18,7 +18,7 @@ export const WhatsAppFloat = () => {
       title="Contacter Relais IT sur WhatsApp"
       className="group fixed bottom-20 right-5 sm:bottom-24 sm:right-6 z-50 flex h-[52px] w-[52px] sm:h-14 sm:w-14 items-center justify-center rounded-full bg-brand-orange text-white shadow-xl shadow-brand-orange/30 transition-all duration-300 hover:bg-brand-orangeDark hover:scale-105"
     >
-      <span className="absolute inline-flex h-full w-full rounded-full bg-brand-orange/40 animate-ping opacity-60 group-hover:opacity-0" />
+      <span className="absolute inline-flex h-full w-full rounded-full bg-brand-orange/40 animate-ping opacity-60 group-hover:opacity-0 motion-reduce:animate-none motion-reduce:hidden" />
       <WhatsAppIcon />
       <span className="pointer-events-none absolute right-full mr-3 hidden whitespace-nowrap rounded-lg bg-navy px-3 py-2 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity duration-300 group-hover:opacity-100 lg:block">
         Contacter sur WhatsApp
