@@ -1,0 +1,84 @@
+{
+  "summary": "Frontend-only QA of Relais IT single-page site on preview URL. Validated WhatsApp number update (now 2250161319782), unchanged phone/email/tel/mailto, SEO metadata pointing to relaisit.com, structure intact, accessibility, and mobile behavior. All targets pass with no console/page errors.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verifications": {
+    "whatsapp_float": {
+      "href": "https://wa.me/2250161319782",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "aria_label": "Contacter Relais IT sur WhatsApp",
+      "visible_desktop": true,
+      "visible_mobile": true,
+      "motion_reduce_classes": "motion-reduce:animate-none + motion-reduce:hidden present on ping span"
+    },
+    "contact_whatsapp_btn": {
+      "href": "https://wa.me/2250161319782",
+      "target": "_blank",
+      "rel": "noopener noreferrer"
+    },
+    "contact_phone": {
+      "display": "07 47 73 25 57",
+      "call_btn_href": "tel:+2250747732557"
+    },
+    "contact_email": {
+      "card_present": true,
+      "email_btn_href": "mailto:contact@relaisit.com"
+    },
+    "old_whatsapp_check": {
+      "wa.me_links_found": ["https://wa.me/2250161319782", "https://wa.me/2250161319782"],
+      "old_2250747732557_in_wa_links": 0,
+      "note": "Old digits 2250747732557 still appear ~4 times in DOM but only inside tel:+2250747732557 (call button) and JSON-LD telephone field — both expected and unchanged."
+    },
+    "structure": {
+      "header_nav_links": ["Accueil","Services","Solutions","Formations","À propos","Contact"],
+      "header_cta": "Demander un devis",
+      "sections_present": ["accueil(hero)","services","solutions","apropos","pourquoi","formations","contact"],
+      "logos": [{"src":"/logo-relais.png","naturalWidth":1620},{"src":"/logo-relais.png","naturalWidth":1620}]
+    },
+    "seo": {
+      "title": "Relais IT — Solutions informatiques, support IT & formation à Abidjan",
+      "description_present": true,
+      "canonical": "https://relaisit.com/",
+      "og_title": "Relais IT — Votre partenaire IT de confiance",
+      "og_url": "https://relaisit.com/",
+      "og_image": "https://relaisit.com/og-image.png",
+      "og_image_alt": "Logo Relais IT — Trust it.",
+      "twitter_card": "summary_large_image",
+      "html_lang": "fr",
+      "jsonld_type": "ProfessionalService",
+      "jsonld_url": "https://relaisit.com/"
+    },
+    "accessibility": {
+      "h1_count": 1,
+      "images_total": 2,
+      "images_missing_alt": 0,
+      "whatsapp_aria_label_present": true
+    },
+    "mobile_390px": {
+      "whatsapp_float_visible": true,
+      "mobile_menu_opens": true,
+      "mobile_menu_closes": true
+    },
+    "console_errors": [],
+    "page_errors": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "JSON-LD telephone (+2250747732557) intentionally preserves the call number — this is consistent with requirement (only WhatsApp number changed). OK.",
+    "Code is clean, env vars unused (static site), data-testid coverage is good."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "100%"},
+  "test_credentials": "N/A",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Both WhatsApp links updated to 2250161319782 (float + contact button). All other contact channels (tel:+2250747732557, mailto:contact@relaisit.com) unchanged. SEO uses relaisit.com. No regressions observed on desktop 1920 or mobile 390 viewports.",
+  "rca of the issue": "N/A — no defects found."
+}

@@ -50,7 +50,7 @@ export const CONTACT = {
   location: "Abidjan, Côte d'Ivoire",
   tel: "tel:+2250747732557",
   mailto: "mailto:contact@relaisit.com",
-  whatsapp: "https://wa.me/2250747732557",
+  whatsapp: "https://wa.me/2250161319782",
 };
 
 export const LOGO_URL = "/logo-relais.png";
