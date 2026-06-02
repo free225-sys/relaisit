@@ -14,7 +14,7 @@ export const Hero = () => {
       <div className="absolute -top-40 -right-40 h-[34rem] w-[34rem] rounded-full bg-navy/5 blur-3xl" />
       <div className="absolute top-1/3 -left-32 h-96 w-96 rounded-full bg-brand-orange/5 blur-3xl" />
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-12 pt-20 pb-24 lg:pt-28 lg:pb-32">
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-12 pt-14 pb-16 lg:pt-20 lg:pb-24">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left: text */}
           <div>
@@ -29,15 +29,15 @@ export const Hero = () => {
               initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.05 }}
               className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-navy leading-[1.08]"
             >
-              Votre partenaire de confiance pour vos solutions IT
+              Votre partenaire IT de confiance
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }}
               className="mt-6 text-base lg:text-lg leading-relaxed text-slate-600 max-w-xl"
             >
-              Relais IT accompagne les entreprises, institutions et professionnels dans la mise en
-              place de solutions informatiques fiables, modernes et adaptées à leurs besoins.
+              Relais IT accompagne les entreprises avec des solutions informatiques fiables,
+              simples et adaptées.
             </motion.p>
 
             <motion.div
