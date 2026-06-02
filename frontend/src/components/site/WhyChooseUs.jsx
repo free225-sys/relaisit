@@ -6,42 +6,45 @@ import { Reveal } from "./Reveal";
 export const WhyChooseUs = () => {
   return (
     <section id="pourquoi" data-testid="why-section" className="py-16 sm:py-20 bg-navy relative overflow-hidden">
-      <div className="absolute inset-0 bg-grid-navy opacity-[0.08]" style={{ filter: "invert(1)" }} />
-      <div className="absolute -top-24 right-0 h-80 w-80 rounded-full bg-brand-orange/10 blur-3xl" />
+      <div className="absolute -top-24 right-0 h-72 w-72 rounded-full bg-brand-orange/10 blur-3xl" />
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
-        <Reveal>
-          <div className="max-w-2xl">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left */}
+          <Reveal>
             <span className="text-sm uppercase tracking-[0.2em] font-bold text-brand-orange">Pourquoi nous</span>
             <h2 className="mt-3 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white">
               Pourquoi Relais IT ?
             </h2>
-            <p className="mt-4 text-base lg:text-lg leading-relaxed text-slate-300">
-              Une approche fiable, réactive et orientée résultats.
+            <p className="mt-5 text-base lg:text-lg leading-relaxed text-slate-300">
+              Une équipe réactive, une approche claire et des solutions pensées pour vos objectifs.
             </p>
-          </div>
-        </Reveal>
+          </Reveal>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {WHY.map((w, i) => {
-            const Icon = Icons[w.icon] || Icons.CheckCircle2;
-            return (
-              <motion.div
-                key={w.title}
-                data-testid={`why-card-${i}`}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
-                className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm transition-all duration-300 hover:bg-white/[0.08] hover:border-brand-orange/40"
-              >
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-orange/15 text-brand-orange">
-                  <Icon size={22} strokeWidth={1.5} />
-                </div>
-                <h3 className="mt-4 text-base font-semibold text-white">{w.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-slate-300">{w.desc}</p>
-              </motion.div>
-            );
-          })}
+          {/* Right grid */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            {WHY.map((w, i) => {
+              const Icon = Icons[w.icon] || Icons.CheckCircle2;
+              return (
+                <motion.div
+                  key={w.title}
+                  data-testid={`why-card-${i}`}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.45, delay: (i % 2) * 0.08 }}
+                  className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.05] p-4 backdrop-blur-sm transition-all duration-300 hover:bg-white/[0.1] hover:border-brand-orange/40"
+                >
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-orange/15 text-brand-orange">
+                    <Icon size={18} strokeWidth={1.75} />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-white leading-tight">{w.title}</h3>
+                    <p className="mt-1 text-xs leading-relaxed text-slate-300">{w.desc}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

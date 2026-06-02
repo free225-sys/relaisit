@@ -1,36 +1,48 @@
 import { Phone, Mail, MapPin } from "lucide-react";
-import { CONTACT, LOGO_URL } from "@/data/content";
+import { NAV_LINKS, CONTACT, LOGO_URL } from "@/data/content";
+
+const scrollTo = (href) => {
+  const el = document.querySelector(href);
+  if (el) el.scrollIntoView({ behavior: "smooth" });
+};
 
 export const Footer = () => {
   return (
     <footer data-testid="site-footer" className="bg-navy-deep text-slate-300">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-12">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
-          {/* Brand */}
-          <div className="max-w-sm">
-            <div className="inline-flex rounded-xl bg-white px-4 py-3 shadow-lg">
-              <img src={LOGO_URL} alt="Relais IT — Trust it." className="h-9 w-auto object-contain" />
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10">
+        <div className="grid gap-8 md:grid-cols-3 md:items-start">
+          {/* Left: brand */}
+          <div>
+            <div className="inline-flex rounded-lg bg-white px-3.5 py-2.5 shadow-md">
+              <img src={LOGO_URL} alt="Relais IT — Trust it." className="h-7 w-auto object-contain" />
             </div>
-            <p className="mt-5 text-base font-medium text-white">Relais IT — Trust it.</p>
-            <p className="mt-2 text-sm leading-relaxed text-slate-400">
-              Votre partenaire IT de confiance.
-            </p>
+            <p className="mt-3 text-sm font-medium text-white">Relais IT — Trust it.</p>
           </div>
 
-          {/* Contact */}
-          <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wide text-white">Contact</h4>
-            <ul className="mt-5 space-y-4 text-sm">
-              <li><a href={CONTACT.tel} className="flex items-center gap-3 hover:text-brand-orange transition-colors"><Phone size={18} className="text-brand-orange shrink-0" strokeWidth={1.5} /> {CONTACT.phone}</a></li>
-              <li><a href={CONTACT.mailto} className="flex items-center gap-3 hover:text-brand-orange transition-colors"><Mail size={18} className="text-brand-orange shrink-0" strokeWidth={1.5} /> {CONTACT.email}</a></li>
-              <li className="flex items-center gap-3"><MapPin size={18} className="text-brand-orange shrink-0" strokeWidth={1.5} /> {CONTACT.location}</li>
-            </ul>
-          </div>
+          {/* Center: nav */}
+          <nav className="flex flex-wrap gap-x-6 gap-y-2 md:justify-center">
+            {NAV_LINKS.map((l) => (
+              <button
+                key={l.href}
+                data-testid={`footer-nav-${l.href.replace("#", "")}`}
+                onClick={() => scrollTo(l.href)}
+                className="text-sm text-slate-400 hover:text-brand-orange transition-colors"
+              >
+                {l.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* Right: contact */}
+          <ul className="space-y-2.5 text-sm md:text-right">
+            <li><a href={CONTACT.tel} className="inline-flex items-center gap-2 md:flex-row-reverse hover:text-brand-orange transition-colors"><Phone size={16} className="text-brand-orange shrink-0" strokeWidth={1.5} /> {CONTACT.phone}</a></li>
+            <li><a href={CONTACT.mailto} className="inline-flex items-center gap-2 md:flex-row-reverse hover:text-brand-orange transition-colors"><Mail size={16} className="text-brand-orange shrink-0" strokeWidth={1.5} /> {CONTACT.email}</a></li>
+            <li className="inline-flex items-center gap-2 md:flex-row-reverse"><MapPin size={16} className="text-brand-orange shrink-0" strokeWidth={1.5} /> {CONTACT.location}</li>
+          </ul>
         </div>
 
-        <div className="mt-10 border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-sm text-slate-400">© {new Date().getFullYear()} Relais IT. Tous droits réservés.</p>
-          <p className="text-sm text-slate-500">Trust it.</p>
+        <div className="mt-8 border-t border-white/10 pt-5 text-center md:text-left">
+          <p className="text-xs text-slate-500">© {new Date().getFullYear()} Relais IT. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

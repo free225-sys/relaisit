@@ -34,7 +34,7 @@ export const Header = () => {
             onClick={(e) => { e.preventDefault(); handleNav("#accueil"); }}
             className="flex items-center shrink-0"
           >
-            <img src={LOGO_URL} alt="Relais IT — Trust it." className="h-12 sm:h-14 w-auto object-contain" />
+            <img src={LOGO_URL} alt="Relais IT — Trust it." className="h-auto w-[112px] sm:w-[128px] object-contain" />
           </a>
 
           <nav className="hidden lg:flex items-center gap-9">

@@ -14,8 +14,8 @@ export const Hero = () => {
       <div className="absolute -top-40 -right-40 h-[34rem] w-[34rem] rounded-full bg-navy/5 blur-3xl" />
       <div className="absolute top-1/3 -left-32 h-96 w-96 rounded-full bg-brand-orange/5 blur-3xl" />
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-12 pt-14 pb-16 lg:pt-20 lg:pb-24">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-12 pt-12 pb-14 lg:pt-16 lg:pb-20">
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
           {/* Left: text */}
           <div>
             <motion.span
@@ -74,9 +74,9 @@ export const Hero = () => {
           {/* Right: abstract IT visual */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, delay: 0.2 }}
-            className="relative hidden lg:block"
+            className="relative hidden lg:block max-w-sm ml-auto"
           >
-            <div className="relative rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-navy/10">
+            <div className="relative rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-navy/10">
               <svg viewBox="0 0 400 360" className="w-full h-auto">
                 <defs>
                   <linearGradient id="nodeg" x1="0" y1="0" x2="1" y2="1">

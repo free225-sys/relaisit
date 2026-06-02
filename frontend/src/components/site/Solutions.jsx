@@ -1,39 +1,44 @@
 import * as Icons from "lucide-react";
 import { motion } from "framer-motion";
-import { SOLUTIONS } from "@/data/content";
+import { METHOD } from "@/data/content";
 import { Reveal, SectionHeading } from "./Reveal";
 
 export const Solutions = () => {
   return (
     <section id="solutions" data-testid="solutions-section" className="py-16 sm:py-20 bg-slate-50 relative overflow-hidden">
-      <div className="absolute inset-0 bg-dot-navy opacity-60" />
+      <div className="absolute inset-0 bg-dot-navy opacity-50" />
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
         <Reveal>
           <SectionHeading
-            label="Solutions"
-            title="Des solutions concrètes"
-            description="Une mise en œuvre simple et efficace, du diagnostic au pilotage."
+            label="Méthode"
+            title="Notre méthode"
+            description="Une approche simple pour comprendre, déployer et accompagner."
           />
         </Reveal>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {SOLUTIONS.map((s, i) => {
-            const Icon = Icons[s.icon] || Icons.Circle;
+        <div className="relative mt-14 grid md:grid-cols-3 gap-6 lg:gap-8">
+          {/* connecting line on desktop */}
+          <div className="hidden md:block absolute top-9 left-[16%] right-[16%] h-px bg-gradient-to-r from-transparent via-navy/20 to-transparent" />
+          {METHOD.map((m, i) => {
+            const Icon = Icons[m.icon] || Icons.Circle;
             return (
               <motion.div
-                key={s.title}
-                data-testid={`solution-card-${i}`}
+                key={m.title}
+                data-testid={`method-card-${i}`}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: i * 0.07 }}
-                className="group rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-300 hover:border-navy/30 hover:shadow-lg"
+                transition={{ duration: 0.5, delay: i * 0.12 }}
+                className="relative text-center"
               >
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-navy/5 text-navy transition-colors group-hover:bg-brand-orange group-hover:text-white">
-                  <Icon size={22} strokeWidth={1.5} />
+                <div className="relative mx-auto flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-navy text-white shadow-lg shadow-navy/20">
+                  <Icon size={28} strokeWidth={1.5} />
+                  <span className="absolute -top-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full bg-brand-orange text-xs font-bold text-white">
+                    {m.step}
+                  </span>
                 </div>
-                <h3 className="mt-4 text-base font-semibold text-navy leading-snug">{s.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-slate-600">{s.desc}</p>
+                <h3 className="mt-5 text-xl font-semibold text-navy">{m.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600 max-w-xs mx-auto">{m.desc}</p>
               </motion.div>
             );
           })}

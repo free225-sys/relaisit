@@ -11,7 +11,7 @@ export const Formations = () => {
           <SectionHeading
             label="Formations"
             title="Formations professionnelles"
-            description="Relais IT accompagne les équipes dans la maîtrise des outils numériques, de la bureautique et de l'intelligence artificielle."
+            description="Relais IT aide vos équipes à mieux utiliser les outils numériques, la bureautique et l'intelligence artificielle."
           />
         </Reveal>
 

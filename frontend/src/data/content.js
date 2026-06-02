@@ -10,18 +10,23 @@ export const NAV_LINKS = [
 
 export const SERVICES = [
   { icon: "LifeBuoy", title: "Support informatique", desc: "Assistance, maintenance et résolution rapide des incidents." },
-  { icon: "Server", title: "Matériel informatique", desc: "Fourniture d'équipements adaptés aux besoins professionnels." },
-  { icon: "ShieldCheck", title: "Réseaux & sécurité", desc: "Installation, configuration et sécurisation de vos infrastructures." },
-  { icon: "Workflow", title: "Solutions digitales", desc: "Outils simples pour améliorer la gestion et la productivité." },
-  { icon: "GraduationCap", title: "Formation professionnelle", desc: "Formations pratiques pour renforcer les compétences des équipes." },
+  { icon: "Server", title: "Matériel informatique", desc: "Équipements adaptés aux besoins professionnels." },
+  { icon: "ShieldCheck", title: "Réseaux & sécurité", desc: "Installation et sécurisation de vos infrastructures." },
+  { icon: "Workflow", title: "Solutions digitales", desc: "Outils simples pour améliorer la gestion." },
+  { icon: "GraduationCap", title: "Formation professionnelle", desc: "Formations pratiques pour vos équipes." },
   { icon: "Compass", title: "Conseil IT", desc: "Accompagnement clair pour vos choix technologiques." },
 ];
 
-export const SOLUTIONS = [
-  { icon: "Search", title: "Audit & diagnostic", desc: "État des lieux complet de votre informatique." },
-  { icon: "Settings", title: "Installation & configuration", desc: "Postes et systèmes prêts à l'emploi." },
-  { icon: "ShieldCheck", title: "Sécurité & réseau", desc: "Infrastructures protégées et performantes." },
-  { icon: "BarChart3", title: "Outils de gestion", desc: "Pilotage et reporting simplifiés." },
+export const METHOD = [
+  { icon: "Search", step: "01", title: "Comprendre", desc: "Audit rapide de vos besoins, outils et priorités." },
+  { icon: "Rocket", step: "02", title: "Déployer", desc: "Mise en place de solutions fiables et adaptées." },
+  { icon: "HeartHandshake", step: "03", title: "Accompagner", desc: "Support, formation et suivi dans la durée." },
+];
+
+export const ABOUT_VALUES = [
+  { icon: "MapPin", title: "Proximité", desc: "Une compréhension concrète de vos besoins." },
+  { icon: "ShieldCheck", title: "Fiabilité", desc: "Des solutions stables et sécurisées." },
+  { icon: "Sparkles", title: "Clarté", desc: "Un accompagnement simple, structuré et transparent." },
 ];
 
 export const WHY = [
@@ -48,5 +53,4 @@ export const CONTACT = {
   whatsapp: "https://wa.me/2250747732557",
 };
 
-export const LOGO_URL =
-  "https://customer-assets.emergentagent.com/job_8e909f7f-2e85-40dc-a576-4b8a267cf81b/artifacts/ro1q2g1t_logo_Relais_IT.jpeg";
+export const LOGO_URL = "/logo-relais.png";
