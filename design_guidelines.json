@@ -1,0 +1,124 @@
+{
+  "theme": "Light",
+  "archetype": "Swiss & High-Contrast / Corporate Enterprise",
+  "domain": "IT Services & Technology Solutions",
+  "brand": {
+    "name": "Relais IT",
+    "slogan": "Trust it.",
+    "logo_url": "https://customer-assets.emergentagent.com/job_8e909f7f-2e85-40dc-a576-4b8a267cf81b/artifacts/ro1q2g1t_logo_Relais_IT.jpeg",
+    "personality": "Trustworthy, modern, structured, professional"
+  },
+  "typography": {
+    "font_family_heading": "Jost",
+    "font_family_body": "Jost",
+    "google_font_url": "https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap",
+    "rationale": "Jost is a precise, geometric sans-serif that closely matches Century Gothic. It provides the clean, round, web-safe geometric feel requested.",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#1B4C6B] leading-tight",
+      "h2": "text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-[#1B4C6B]",
+      "h3": "text-xl sm:text-2xl font-semibold text-[#1B4C6B]",
+      "body": "text-base lg:text-lg leading-relaxed text-slate-600",
+      "label": "text-sm uppercase tracking-[0.2em] font-bold text-[#E8743B]"
+    }
+  },
+  "colors": {
+    "primary": "#1B4C6B",
+    "accent": "#E8743B",
+    "background": {
+      "default": "#FFFFFF",
+      "subtle": "#F8FAFC",
+      "muted": "#F1F5F9"
+    },
+    "text": {
+      "primary": "#0F172A",
+      "secondary": "#475569",
+      "inverse": "#FFFFFF",
+      "brand": "#1B4C6B"
+    },
+    "border": "#E2E8F0"
+  },
+  "spacing_and_layout": {
+    "container_padding": "px-6 lg:px-12 max-w-7xl mx-auto",
+    "section_spacing": "py-24 sm:py-32",
+    "grid_gap": "gap-8 lg:gap-12",
+    "card_padding": "p-8 lg:p-10",
+    "border_radius": "rounded-2xl"
+  },
+  "components": {
+    "header": {
+      "style": "bg-white/90 backdrop-blur-xl border-b border-slate-200 sticky top-0 z-50 transition-all",
+      "nav_links": "text-slate-600 hover:text-[#1B4C6B] font-medium text-sm uppercase tracking-wide transition-colors"
+    },
+    "button": {
+      "primary": "inline-flex items-center justify-center bg-[#E8743B] hover:bg-[#D06530] text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-[#E8743B]/20",
+      "secondary": "inline-flex items-center justify-center bg-[#1B4C6B] hover:bg-[#153B54] text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 hover:-translate-y-0.5",
+      "outline": "inline-flex items-center justify-center border-2 border-[#1B4C6B] text-[#1B4C6B] hover:bg-[#1B4C6B] hover:text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300"
+    },
+    "card": {
+      "style": "bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-[#1B4C6B]/5 transition-all duration-300 rounded-2xl relative overflow-hidden",
+      "hover_effect": "group-hover:-translate-y-1"
+    }
+  },
+  "visual_enhancers": {
+    "abstract_graphics": "Use pure CSS/SVG patterns. For example: a subtle dot grid background (using radial-gradient), geometric diagonal cuts, or SVG network nodes using stroke-[#1B4C6B]/10. Do not use image files.",
+    "icons": "Use 'lucide-react'. Apply primary color (#1B4C6B) with occasional accent touches (#E8743B). Use strokeWidth={1.5}.",
+    "animations": "Use framer-motion for smooth entrance. Fade-in and slide-up for text blocks, staggered reveals for cards."
+  },
+  "media": {
+    "logo_url": "https://customer-assets.emergentagent.com/job_8e909f7f-2e85-40dc-a576-4b8a267cf81b/artifacts/ro1q2g1t_logo_Relais_IT.jpeg",
+    "images": "FORBIDDEN. No stock photos, no AI generated photos. Use CSS and SVG."
+  },
+  "sections": [
+    {
+      "id": "header",
+      "content": "Logo on left. Desktop Nav: Accueil, Services, Solutions, Formations, À propos, Contact. CTA 'Demander un devis' on right. Mobile hamburger."
+    },
+    {
+      "id": "hero",
+      "content": "Headline: 'Votre partenaire de confiance pour vos solutions IT'. Subtitle: 'Relais IT vous accompagne dans la transformation numérique avec expertise et sécurité.'. CTAs: 'Découvrir nos services' (Primary) & 'Demander un devis' (Outline). Background: Abstract tech SVG pattern (nodes/grid). Height: min-h-screen."
+    },
+    {
+      "id": "services",
+      "content": "6 Cards Grid (Support, Consulting, Solutions, Training, Hardware, Assistance). Minimalist icons, clean hover effects."
+    },
+    {
+      "id": "solutions",
+      "content": "7 items. Use a Bento grid or alternating staggered list layout. Strong typography, numeric markers (01, 02, etc.). Background: subtle grey (#F8FAFC)."
+    },
+    {
+      "id": "why_choose_us",
+      "content": "6 Trust points. Icons, bold metric/title, short text. Emphasize security, expertise, support."
+    },
+    {
+      "id": "formations",
+      "content": "Training programs overview. Callout card styling."
+    },
+    {
+      "id": "about",
+      "content": "Mission statement. Clean typography, large geometric accent shape."
+    },
+    {
+      "id": "contact",
+      "content": "Two columns: Contact Form (Nom, Email, Téléphone, Objet, Message + Submit Button) and Info Card (Phone: 07 47 73 25 57, Email: contact@relaisit.com, Location: Abidjan)."
+    },
+    {
+      "id": "footer",
+      "content": "Background #1B4C6B. White logo placement (requires care as logo has white background; place it inside a white rounded box or use CSS mix-blend-mode if appropriate, but keeping it in a white pill/container is safest). Quick links, services list, contact info, copyright."
+    },
+    {
+      "id": "admin",
+      "content": "Simple isolated route/view to list contact submissions. Basic table layout."
+    }
+  ],
+  "instructions_to_main_agent": [
+    "Build as a React SPA with a single-page scrolling structure using standard section IDs (e.g., id='services').",
+    "Install 'lucide-react' for all iconography.",
+    "Install 'framer-motion' for all animations.",
+    "Add the Google Font 'Jost' to index.html and configure Tailwind to use it as sans.",
+    "Strictly adhere to the NO IMAGES rule for content. Create visual interest exclusively through typography, white space, CSS shapes, and SVG patterns.",
+    "Use data-testid attributes on ALL interactive elements (buttons, nav links, form inputs) and key informational components.",
+    "Ensure all French text is grammatically correct and layout gracefully handles the string lengths.",
+    "For the Footer, since the logo has a white background, place the logo inside a white rounded container to make it look intentional on the dark navy footer background.",
+    "Create a mock simple admin view or component (e.g. /admin) that displays a list of contact form submissions using Shadcn/Tailwind tables."
+  ]
+}
