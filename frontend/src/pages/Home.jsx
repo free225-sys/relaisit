@@ -1,12 +1,13 @@
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
 import { Services } from "@/components/site/Services";
-import { Solutions } from "@/components/site/Solutions";
+import { Method } from "@/components/site/Method";
 import { WhyChooseUs } from "@/components/site/WhyChooseUs";
 import { Formations } from "@/components/site/Formations";
 import { About } from "@/components/site/About";
 import { Contact } from "@/components/site/Contact";
 import { Footer } from "@/components/site/Footer";
+import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
 
 export default function Home() {
   return (
@@ -15,13 +16,14 @@ export default function Home() {
       <main>
         <Hero />
         <Services />
-        <Solutions />
+        <Method />
         <About />
         <WhyChooseUs />
         <Formations />
         <Contact />
       </main>
       <Footer />
+      <WhatsAppFloat />
     </div>
   );
 }

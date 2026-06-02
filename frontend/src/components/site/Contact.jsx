@@ -4,9 +4,9 @@ import { Reveal } from "./Reveal";
 
 export const Contact = () => {
   const cards = [
-    { icon: Phone, label: "Téléphone", value: CONTACT.phone, href: CONTACT.tel },
-    { icon: Mail, label: "Email", value: CONTACT.email, href: CONTACT.mailto },
-    { icon: MapPin, label: "Localisation", value: CONTACT.location, href: null },
+    { icon: Phone, label: "Téléphone", value: CONTACT.phone, href: CONTACT.tel, tid: "contact-telephone" },
+    { icon: Mail, label: "Email", value: CONTACT.email, href: CONTACT.mailto, tid: "contact-email" },
+    { icon: MapPin, label: "Localisation", value: CONTACT.location, href: null, tid: "contact-localisation" },
   ];
 
   return (
@@ -37,9 +37,9 @@ export const Contact = () => {
               </div>
             );
             return c.href ? (
-              <a key={c.label} href={c.href} data-testid={`contact-${c.label.toLowerCase()}`} className="block h-full">{inner}</a>
+              <a key={c.label} href={c.href} data-testid={c.tid} className="block h-full">{inner}</a>
             ) : (
-              <div key={c.label} data-testid={`contact-${c.label.toLowerCase()}`} className="h-full">{inner}</div>
+              <div key={c.label} data-testid={c.tid} className="h-full">{inner}</div>
             );
           })}
         </div>

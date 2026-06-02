@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import { METHOD } from "@/data/content";
 import { Reveal, SectionHeading } from "./Reveal";
 
-export const Solutions = () => {
+export const Method = () => {
   return (
-    <section id="solutions" data-testid="solutions-section" className="py-16 sm:py-20 bg-slate-50 relative overflow-hidden">
+    <section id="solutions" data-testid="method-section" className="py-16 sm:py-20 bg-slate-50 relative overflow-hidden">
       <div className="absolute inset-0 bg-dot-navy opacity-50" />
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
         <Reveal>
