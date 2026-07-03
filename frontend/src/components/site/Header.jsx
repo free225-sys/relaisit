@@ -19,11 +19,17 @@ export const Header = () => {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Header solide dès qu'on scrolle ou que le menu mobile est ouvert,
+  // transparent au-dessus de la vidéo du hero sinon.
+  const solid = scrolled || open;
+
   return (
     <header
       data-testid="site-header"
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-white/90 backdrop-blur-xl border-b border-slate-200 shadow-sm" : "bg-white/70 backdrop-blur-md border-b border-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        solid
+          ? "bg-white/90 backdrop-blur-xl border-b border-slate-200 shadow-sm"
+          : "bg-transparent border-b border-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -32,7 +38,9 @@ export const Header = () => {
             href="#accueil"
             data-testid="logo-link"
             onClick={(e) => { e.preventDefault(); handleNav("#accueil"); }}
-            className="flex items-center shrink-0"
+            className={`flex items-center shrink-0 transition-all duration-300 ${
+              solid ? "" : "bg-white rounded-xl px-2.5 py-1.5 shadow-md"
+            }`}
           >
             <img src={LOGO_URL} alt="Relais IT — Trust it." className="h-auto w-[112px] sm:w-[128px] object-contain" />
           </a>
@@ -43,7 +51,11 @@ export const Header = () => {
                 key={link.href}
                 data-testid={`nav-${link.href.replace("#", "")}`}
                 onClick={() => handleNav(link.href)}
-                className="relative text-sm font-medium text-slate-600 hover:text-navy transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-0 after:bg-brand-orange after:transition-all hover:after:w-full"
+                className={`relative text-sm font-medium transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-0 after:bg-brand-orange after:transition-all hover:after:w-full ${
+                  solid
+                    ? "text-slate-600 hover:text-navy"
+                    : "text-white/90 hover:text-white drop-shadow-sm"
+                }`}
               >
                 {link.label}
               </button>
@@ -62,7 +74,7 @@ export const Header = () => {
 
           <button
             data-testid="mobile-menu-toggle"
-            className="lg:hidden p-2 text-navy"
+            className={`lg:hidden p-2 transition-colors ${solid ? "text-navy" : "text-white"}`}
             onClick={() => setOpen(!open)}
             aria-label="Menu"
           >

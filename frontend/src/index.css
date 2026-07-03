@@ -73,6 +73,8 @@ code {
     background: #153B54;
 }
 
+section[id] { scroll-margin-top: 5rem; }
+
 /* Abstract grid pattern utility */
 .bg-grid-navy {
     background-image:

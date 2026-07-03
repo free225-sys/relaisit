@@ -1,33 +1,32 @@
-# Relais IT — Corporate Website (PRD)
+# Relais IT — Corporate Website PRD
 
-## Problem Statement
-Professional corporate single-page website for "Relais IT", an IT services & technology
-solutions company in Abidjan, Côte d'Ivoire. Slogan: "Trust it." Brand: trustworthy,
-modern, structured. Colors: dark navy (#1B4C6B) + orange accent (#E8743B), white/light-grey
-backgrounds. Font: Jost (Century Gothic alternative). French only content.
+## Original Problem Statement
+Build a professional corporate single-page website for "Relais IT" (IT services company, Abidjan, Côte d'Ivoire). Trustworthy, modern, structured design with dark navy blue and orange brand colors. Sections: Header, Hero, Services, Method, About, Why Choose Us, Training, Contact. Stack: React + FastAPI + MongoDB. Site content is 100% French; user communicates in English.
 
-## User Choices
-- Contact submissions: store in DB + simple admin view
-- Single-page scroll with anchor nav
-- French only
-- Abstract CSS/SVG visuals (no stock/AI images)
-- Email sending deferred
+## Core Requirements
+- Clean, premium, concise UI
+- No contact form — direct action links only (WhatsApp wa.me, mailto, tel)
+- Floating WhatsApp button (number: 01 61 31 97 82)
+- SEO-optimized: OpenGraph, JSON-LD, Twitter cards, favicons, robots.txt, sitemap.xml
+- Mobile-responsive
+- Production domain already live
+
+## What's Been Implemented
+- Full single-page site (Home.jsx + components in /app/frontend/src/components/site/)
+- Multiple UI refinement passes (shortened copy, "Method" 3-step section)
+- PNG logo integration, SEO/metadata pass, domain setup, final delivery audit (all tests passed, iterations 1–7)
+- 2026-06: Replaced Hero.jsx (full-screen video background hero, bottom-left content, pill CTAs) and Header.jsx (transparent over hero → solid white on scroll/menu open) with user-provided files; added `section[id] { scroll-margin-top: 5rem; }` to index.css. Verified via screenshots.
 
 ## Architecture
-- Backend: FastAPI + MongoDB (motor). Routes under /api: contact (POST/GET/DELETE), status.
-- Frontend: React SPA. Home (single-page sections) + /admin route. framer-motion, lucide-react, shadcn ui, Tailwind, sonner toasts.
-- Content data centralized in src/data/content.js. Logo used as-is (provided JPEG).
+- Backend: /app/backend/server.py (FastAPI, CRUD for contact_submissions — legacy, form removed from frontend)
+- Frontend: React + Tailwind + Framer Motion; content centralized in /app/frontend/src/data/content.js
+- Routes: / (Home), /admin (unprotected admin view of contact submissions)
 
-## Implemented (2026-06-02)
-- Header (sticky, smooth-scroll nav, mobile hamburger, CTA "Demander un devis")
-- Hero (headline, subtext, dual CTAs, abstract SVG network visual, stat cards)
-- Services (6 cards), Solutions (7 cards), Why Choose Us (6, navy section)
-- Formations (callout + 5 programs), About, Contact (form -> /api/contact), Footer
-- Admin page /admin: list, refresh, delete submissions
-- Backend CRUD for contact submissions; 100% tests passing
+## Backlog
+- P1: Secure /admin route + backend contact API with auth
+- P2: Restrict CORS to production domain
+- P2: Purge orphaned POST /api/contact logic if form permanently removed
 
-## Backlog / Next
-- P1: Add auth gate to /admin (shared-secret or login) before production
-- P2: Email notification on new contact (Resend/SendGrid) when key provided
-- P2: trim()/whitespace validation on form fields; tighten CORS for production
-- P2: SEO meta tags, favicon, OpenGraph; multi-language toggle (FR/EN)
+## Notes for Agents
+- Respond to user in English; all site content stays in French
+- Site is polished/deployment-ready — no visual changes unless requested
