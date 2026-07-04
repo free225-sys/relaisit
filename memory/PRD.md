@@ -34,6 +34,9 @@ Build a professional corporate single-page website for "Relais IT" (IT services 
 - robots.txt: Disallow: /admin added
 - Verified end-to-end (curl + browser: 401s, wrong/correct password, dashboard, logout)
 
+## SEO Extras
+- 2026-06: Google Search Console verification meta tag (jNN4qvQkKMSFWD3ZabxVylBXuYJEnzdjvI_hZMmfrtQ) added in index.html right after robots meta. User's pasted tag was malformed/nested; corrected valid form inserted. Verified by testing agent (iteration_8): served HTML + build/index.html contain the tag, all regressions pass.
+
 ## Notes for Agents
 - Respond to user in English; all site content stays in French
 - Site is polished/deployment-ready — no visual changes unless requested
