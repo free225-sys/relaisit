@@ -24,9 +24,15 @@ Build a professional corporate single-page website for "Relais IT" (IT services 
 - Routes: / (Home), /admin (unprotected admin view of contact submissions)
 
 ## Backlog
-- P1: Secure /admin route + backend contact API with auth
 - P2: Restrict CORS to production domain
 - P2: Purge orphaned POST /api/contact logic if form permanently removed
+
+## Admin Auth (added 2026-06)
+- /admin protected by password-only login (ADMIN_PASSWORD + JWT_SECRET in backend/.env)
+- POST /api/admin/login → JWT (12h); GET/DELETE /api/contact + GET /api/admin/me require Bearer token (401 otherwise)
+- Frontend: login gate in Admin.jsx, token in sessionStorage, auto-logout on 401, logout button
+- robots.txt: Disallow: /admin added
+- Verified end-to-end (curl + browser: 401s, wrong/correct password, dashboard, logout)
 
 ## Notes for Agents
 - Respond to user in English; all site content stays in French

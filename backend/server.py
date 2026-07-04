@@ -1,14 +1,16 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException, Request, Depends
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
+import secrets
+import jwt
 from pathlib import Path
 from pydantic import BaseModel, Field, EmailStr, ConfigDict
 from typing import List, Optional
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 
 ROOT_DIR = Path(__file__).parent
@@ -24,6 +26,38 @@ app = FastAPI(title="Relais IT API")
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
+
+
+# ---------------- Admin auth ----------------
+JWT_ALGORITHM = "HS256"
+
+
+class AdminLoginInput(BaseModel):
+    password: str = Field(..., min_length=1, max_length=200)
+
+
+def create_admin_token() -> str:
+    payload = {
+        "sub": "admin",
+        "type": "admin",
+        "exp": datetime.now(timezone.utc) + timedelta(hours=12),
+    }
+    return jwt.encode(payload, os.environ["JWT_SECRET"], algorithm=JWT_ALGORITHM)
+
+
+async def require_admin(request: Request) -> None:
+    auth_header = request.headers.get("Authorization", "")
+    if not auth_header.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Non authentifié")
+    token = auth_header[7:]
+    try:
+        payload = jwt.decode(token, os.environ["JWT_SECRET"], algorithms=[JWT_ALGORITHM])
+        if payload.get("type") != "admin":
+            raise HTTPException(status_code=401, detail="Jeton invalide")
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Session expirée")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Jeton invalide")
 
 
 # ---------------- Models ----------------
@@ -92,7 +126,20 @@ async def create_contact(input: ContactSubmissionCreate):
     return submission
 
 
-@api_router.get("/contact", response_model=List[ContactSubmission])
+@api_router.post("/admin/login")
+async def admin_login(input: AdminLoginInput):
+    expected = os.environ["ADMIN_PASSWORD"]
+    if not secrets.compare_digest(input.password.encode("utf-8"), expected.encode("utf-8")):
+        raise HTTPException(status_code=401, detail="Mot de passe incorrect")
+    return {"token": create_admin_token(), "token_type": "bearer"}
+
+
+@api_router.get("/admin/me", dependencies=[Depends(require_admin)])
+async def admin_me():
+    return {"authenticated": True}
+
+
+@api_router.get("/contact", response_model=List[ContactSubmission], dependencies=[Depends(require_admin)])
 async def list_contacts():
     items = await db.contact_submissions.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
     for it in items:
@@ -101,7 +148,7 @@ async def list_contacts():
     return items
 
 
-@api_router.delete("/contact/{submission_id}")
+@api_router.delete("/contact/{submission_id}", dependencies=[Depends(require_admin)])
 async def delete_contact(submission_id: str):
     result = await db.contact_submissions.delete_one({"id": submission_id})
     if result.deleted_count == 0:
