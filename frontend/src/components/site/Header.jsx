@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { NAV_LINKS, LOGO_URL } from "@/data/content";
 
 export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -15,13 +19,17 @@ export const Header = () => {
 
   const handleNav = (href) => {
     setOpen(false);
+    // Depuis une page interne, on revient d'abord à l'accueil avec l'ancre
+    if (!isHome) {
+      navigate(`/${href}`);
+      return;
+    }
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Header solide dès qu'on scrolle ou que le menu mobile est ouvert,
-  // transparent au-dessus de la vidéo du hero sinon.
-  const solid = scrolled || open;
+  // Transparent uniquement en haut de l'accueil (au-dessus de la vidéo du hero)
+  const solid = scrolled || open || !isHome;
 
   return (
     <header
@@ -35,9 +43,9 @@ export const Header = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20">
           <a
-            href="#accueil"
+            href="/"
             data-testid="logo-link"
-            onClick={(e) => { e.preventDefault(); handleNav("#accueil"); }}
+            onClick={(e) => { e.preventDefault(); isHome ? handleNav("#accueil") : navigate("/"); }}
             className={`flex items-center shrink-0 transition-all duration-300 ${
               solid ? "" : "bg-white rounded-xl px-2.5 py-1.5 shadow-md"
             }`}

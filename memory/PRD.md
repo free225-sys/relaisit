@@ -16,6 +16,7 @@ Build a professional corporate single-page website for "Relais IT" (IT services 
 - Multiple UI refinement passes (shortened copy, "Method" 3-step section)
 - PNG logo integration, SEO/metadata pass, domain setup, final delivery audit (all tests passed, iterations 1–7)
 - 2026-06: Replaced Hero.jsx (full-screen video background hero, bottom-left content, pill CTAs) and Header.jsx (transparent over hero → solid white on scroll/menu open) with user-provided files; added `section[id] { scroll-margin-top: 5rem; }` to index.css. Verified via screenshots.
+- 2026-06 (polish-seo drop): Integrated user's 14-file archive as-is: overwrote App.js, index.css, Home.jsx, Header.jsx, Footer.jsx, Services.jsx, sitemap.xml; added ServicePage.jsx, StatsBand.jsx, TrustMarquee.jsx, Testimonials.jsx, Seo.jsx, ScrollToTop.jsx, servicesPages.js. New homepage sections: trust marquee, animated stats band, dark testimonials. 6 new SEO service routes (/support-informatique-abidjan, /materiel-informatique-cote-divoire, /reseaux-securite-informatique-abidjan, /solutions-digitales-abidjan, /formation-informatique-abidjan, /formation-intelligence-artificielle-abidjan) — all verified 200 on direct access with correct SEO titles. Production build passes. No new dependencies.
 
 ## Architecture
 - Backend: /app/backend/server.py (FastAPI, CRUD for contact_submissions — legacy, form removed from frontend)

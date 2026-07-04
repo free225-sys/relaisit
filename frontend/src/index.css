@@ -73,7 +73,23 @@ code {
     background: #153B54;
 }
 
-section[id] { scroll-margin-top: 5rem; }
+/* Marquee (bandeau défilant des expertises) */
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+.animate-marquee {
+    animation: marquee 28s linear infinite;
+}
+.marquee-mask {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+/* Le header étant fixed, les sections ancrées gardent un dégagement de 5rem */
+section[id] {
+    scroll-margin-top: 5rem;
+}
 
 /* Abstract grid pattern utility */
 .bg-grid-navy {
