@@ -24,8 +24,13 @@ Build a professional corporate single-page website for "Relais IT" (IT services 
 - Routes: / (Home), /admin (unprotected admin view of contact submissions)
 
 ## Backlog
-- P2: Restrict CORS to production domain
-- P2: Purge orphaned POST /api/contact logic if form permanently removed
+- (all P2 items closed as of 2026-02 deployment prep)
+
+## Deployment Readiness (2026-02)
+- CORS_ORIGINS set to `*` in backend/.env (required by Emergent Deployer Agent for preview + production hosting).
+- Orphaned `POST /api/contact` endpoint and `ContactSubmissionCreate` model purged from server.py.
+- No hardcoded localhost/0.0.0.0/:8001/127.0.0.1 in backend or frontend source (grep-verified).
+- Deployer Agent health check: **PASS** (all checks green).
 
 ## Admin Auth (added 2026-06)
 - /admin protected by password-only login (ADMIN_PASSWORD + JWT_SECRET in backend/.env)
