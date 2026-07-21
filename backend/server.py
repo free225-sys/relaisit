@@ -7,8 +7,8 @@ import logging
 import secrets
 import jwt
 from pathlib import Path
-from pydantic import BaseModel, Field, EmailStr, ConfigDict
-from typing import List, Optional
+from pydantic import BaseModel, Field, ConfigDict
+from typing import List
 import uuid
 from datetime import datetime, timezone, timedelta
 
@@ -73,14 +73,6 @@ class StatusCheckCreate(BaseModel):
     client_name: str
 
 
-class ContactSubmissionCreate(BaseModel):
-    nom: str = Field(..., min_length=1, max_length=120)
-    email: EmailStr
-    telephone: Optional[str] = Field(default="", max_length=40)
-    objet: str = Field(..., min_length=1, max_length=160)
-    message: str = Field(..., min_length=1, max_length=4000)
-
-
 class ContactSubmission(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
@@ -115,15 +107,6 @@ async def get_status_checks():
         if isinstance(check['timestamp'], str):
             check['timestamp'] = datetime.fromisoformat(check['timestamp'])
     return status_checks
-
-
-@api_router.post("/contact", response_model=ContactSubmission, status_code=201)
-async def create_contact(input: ContactSubmissionCreate):
-    submission = ContactSubmission(**input.model_dump())
-    doc = submission.model_dump()
-    doc['created_at'] = doc['created_at'].isoformat()
-    await db.contact_submissions.insert_one(doc)
-    return submission
 
 
 @api_router.post("/admin/login")
