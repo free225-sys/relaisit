@@ -1,5 +1,6 @@
-import * as Icons from "lucide-react";
+import { Icons } from "@/lib/icons";
 import { motion } from "framer-motion";
+import { reveal } from "@/lib/hydration";
 import { FORMATIONS } from "@/data/content";
 import { Reveal, SectionHeading } from "./Reveal";
 
@@ -22,13 +23,20 @@ export const Formations = () => {
               <motion.div
                 key={f.title}
                 data-testid={`formation-card-${i}`}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
+                {...reveal({
+
+                  initial: { opacity: 0, y: 24 },
+
+                  whileInView: { opacity: 1, y: 0 },
+
+                  viewport: { once: true, margin: "-60px" },
+
+                  transition: { duration: 0.5, delay: i * 0.08 },
+
+                })}
                 className="group rounded-2xl border border-slate-100 bg-slate-50 p-7 transition-all duration-300 hover:bg-white hover:shadow-lg hover:shadow-navy/5"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-navy shadow-sm group-hover:text-brand-orange transition-colors">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-navy shadow-sm group-hover:text-brand-ink transition-colors">
                   <Icon size={24} strokeWidth={1.5} />
                 </div>
                 <h3 className="mt-4 text-lg font-semibold text-navy">{f.title}</h3>

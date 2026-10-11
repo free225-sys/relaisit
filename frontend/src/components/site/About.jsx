@@ -1,5 +1,6 @@
-import * as Icons from "lucide-react";
+import { Icons } from "@/lib/icons";
 import { motion } from "framer-motion";
+import { reveal } from "@/lib/hydration";
 import { ABOUT_VALUES } from "@/data/content";
 import { Reveal } from "./Reveal";
 
@@ -10,7 +11,7 @@ export const About = () => {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: presentation */}
           <Reveal>
-            <span className="text-sm uppercase tracking-[0.2em] font-bold text-brand-orange">À propos</span>
+            <span className="text-sm uppercase tracking-[0.2em] font-bold text-brand-ink">À propos</span>
             <h2 className="mt-3 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-navy leading-tight">
               Un partenaire IT proche de vos réalités
             </h2>
@@ -24,7 +25,7 @@ export const About = () => {
                 <p className="text-2xl font-bold">Trust it.</p>
                 <p className="mt-1 text-xs text-slate-300">Notre engagement</p>
               </div>
-              <p className="text-sm text-slate-500 max-w-[12rem]">
+              <p className="text-sm text-slate-600 max-w-[12rem]">
                 Une relation de confiance, durable et orientée résultats.
               </p>
             </div>
@@ -38,10 +39,17 @@ export const About = () => {
                 <motion.div
                   key={v.title}
                   data-testid={`about-value-${i}`}
-                  initial={{ opacity: 0, x: 24 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  {...reveal({
+
+                    initial: { opacity: 0, x: 24 },
+
+                    whileInView: { opacity: 1, x: 0 },
+
+                    viewport: { once: true, margin: "-60px" },
+
+                    transition: { duration: 0.5, delay: i * 0.1 },
+
+                  })}
                   className="flex items-start gap-5 rounded-2xl border border-slate-100 bg-slate-50 p-6 transition-all duration-300 hover:bg-white hover:shadow-lg hover:shadow-navy/5"
                 >
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-navy shadow-sm">
