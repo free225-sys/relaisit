@@ -95,3 +95,19 @@ credentials.json
 *.key
 .credentials
 frontend/node_modules/.cache/default-development/6.pack
+
+# --- Ajouts audit 2026-08 ---
+# Environnement Python du back-end
+backend/.venv/
+# Sorties de build et de test du front-end
+frontend/build/
+frontend/node_modules/
+# Documents de travail internes : à ne pas publier si le dépôt est public.
+# S'ils sont déjà versionnés : git rm -r --cached memory test_reports test_result.md .emergent
+# memory/
+# test_reports/
+# test_result.md
+# .emergent/
+
+# Modèle de configuration à versionner
+!.env.example
