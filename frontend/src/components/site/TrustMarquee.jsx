@@ -21,8 +21,8 @@ const Row = ({ ariaHidden = false }) => (
   >
     {ITEMS.map(({ icon: Icon, label }) => (
       <li key={label} className="flex items-center gap-2.5 whitespace-nowrap">
-        <Icon size={17} strokeWidth={1.5} className="text-brand-orange shrink-0" />
-        <span className="text-sm font-medium tracking-wide text-slate-500">{label}</span>
+        <Icon size={17} strokeWidth={1.5} className="text-brand-ink shrink-0" />
+        <span className="text-sm font-medium tracking-wide text-slate-600">{label}</span>
       </li>
     ))}
   </ul>

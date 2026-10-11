@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
+import { isHydrating, reveal } from "@/lib/hydration";
 
 // ⚠️ Ajustez ces chiffres avec vos vraies données avant mise en ligne
 const STATS = [
@@ -13,10 +14,15 @@ const Counter = ({ value, prefix = "", suffix = "", duration = 1.6 }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const reduceMotion = useReducedMotion();
-  const [display, setDisplay] = useState(0);
+
+  // Sur une page pré-rendue, le chiffre final figure déjà dans le HTML : on
+  // repart de cette valeur pour que le rendu de React soit identique, plutôt
+  // que de repartir de zéro et de faire clignoter le compteur.
+  const prerendered = useRef(isHydrating()).current;
+  const [display, setDisplay] = useState(prerendered ? value : 0);
 
   useEffect(() => {
-    if (!inView) return;
+    if (prerendered || !inView) return;
     if (reduceMotion) {
       setDisplay(value);
       return;
@@ -32,7 +38,7 @@ const Counter = ({ value, prefix = "", suffix = "", duration = 1.6 }) => {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [inView, value, duration, reduceMotion]);
+  }, [inView, value, duration, reduceMotion, prerendered]);
 
   return (
     <span ref={ref} className="tabular-nums">
@@ -49,19 +55,23 @@ export const StatsBand = () => {
       data-testid="stats-band"
       className="relative overflow-hidden bg-navy-deep py-14 sm:py-16"
     >
-      {/* Lueur orange décorative */}
-      <div className="pointer-events-none absolute -top-24 left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-brand-orange/15 blur-3xl" />
-
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
           {STATS.map((s, i) => (
             <motion.div
               key={s.label}
               data-testid={`stat-${i}`}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
+              {...reveal({
+
+                initial: { opacity: 0, y: 20 },
+
+                whileInView: { opacity: 1, y: 0 },
+
+                viewport: { once: true, margin: "-60px" },
+
+                transition: { duration: 0.5, delay: i * 0.08 },
+
+              })}
               className="text-center"
             >
               <p className="text-4xl sm:text-5xl font-bold tracking-tight text-white">
