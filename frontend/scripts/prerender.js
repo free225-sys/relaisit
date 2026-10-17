@@ -76,16 +76,79 @@ function outputFile(route) {
     : path.join(BUILD_DIR, route.slice(1), "index.html");
 }
 
+// Sur un hébergeur dont l'image de build n'embarque pas Chromium, le pré-rendu
+// ne doit pas faire échouer le déploiement : le site se construit quand même,
+// simplement sans HTML figé. L'absence est signalée bruyamment, et
+// `npm run verify` la détecte (les pages n'ont alors plus leur propre
+// canonical). Mettre PRERENDER_STRICT=1 pour exiger l'échec à la place.
+const STRICT = process.env.PRERENDER_STRICT === "1";
+
+function giveUp(reason) {
+  const msg =
+    "\n" +
+    "═".repeat(72) +
+    "\n  PRÉ-RENDU NON EFFECTUÉ — " +
+    reason +
+    "\n" +
+    "  Le site est construit, mais chaque page partagée affichera l'aperçu\n" +
+    "  de l'accueil (WhatsApp, LinkedIn, Facebook, X) et les balises\n" +
+    "  canonical pointeront toutes vers `/`.\n\n" +
+    "  Pour corriger : installer Chromium dans l'image de build, puis\n" +
+    "  `npx playwright install chromium`, ou renseigner CHROMIUM_PATH.\n" +
+    "═".repeat(72) +
+    "\n";
+  if (STRICT) {
+    console.error(msg);
+    process.exit(1);
+  }
+  console.warn(msg);
+  process.exit(0);
+}
+
+// Cherche un Chromium déjà installé dans l'image (apt, snap, poste de travail)
+// avant de se rabattre sur celui que télécharge Playwright.
+function findSystemChromium() {
+  if (process.env.CHROMIUM_PATH) return process.env.CHROMIUM_PATH;
+  const candidates = [
+    "/usr/bin/chromium",
+    "/usr/bin/chromium-browser",
+    "/usr/bin/google-chrome-stable",
+    "/usr/bin/google-chrome",
+    "/snap/bin/chromium",
+  ];
+  for (const c of candidates) {
+    try {
+      fs.accessSync(c, fs.constants.X_OK);
+      return c;
+    } catch {
+      /* candidat suivant */
+    }
+  }
+  return undefined;
+}
+
+// Dernière chance avant d'abandonner : télécharger le navigateur. Utile sur un
+// hébergeur où `npm ci` n'a pas déclenché le post-install de Playwright.
+function tryInstallChromium() {
+  try {
+    const { execFileSync } = require("child_process");
+    console.warn("  Chromium introuvable — tentative de téléchargement…");
+    execFileSync("npx", ["--yes", "playwright", "install", "chromium"], {
+      stdio: "inherit",
+      timeout: 180000,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function main() {
   let chromium;
   try {
     ({ chromium } = require("playwright"));
   } catch {
-    console.error(
-      "\n✗ Playwright est absent. Installez-le puis relancez :\n" +
-        "    npm install\n    npx playwright install chromium\n",
-    );
-    process.exit(1);
+    giveUp("le paquet `playwright` est absent.");
   }
 
   const indexPath = path.join(BUILD_DIR, "index.html");
@@ -98,13 +161,29 @@ async function main() {
   // version pré-rendue de l'accueil. Elle sert aux pages qu'on ne pré-rend pas.
   const emptyShell = fs.readFileSync(indexPath, "utf8");
 
-  const server = await startServer();
-  const browser = await chromium.launch({
+  const launchOptions = {
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    // Permet d'utiliser un Chromium déjà présent (image CI, poste de travail)
-    // au lieu de celui téléchargé par Playwright.
-    executablePath: process.env.CHROMIUM_PATH || undefined,
-  });
+    // Permet d'utiliser un Chromium déjà présent (image de build, poste de
+    // travail) au lieu de celui téléchargé par Playwright.
+    executablePath: findSystemChromium(),
+  };
+
+  let browser;
+  try {
+    browser = await chromium.launch(launchOptions);
+  } catch (first) {
+    if (!launchOptions.executablePath && tryInstallChromium()) {
+      try {
+        browser = await chromium.launch(launchOptions);
+      } catch (second) {
+        giveUp("aucun navigateur utilisable — " + second.message.split("\n")[0]);
+      }
+    } else {
+      giveUp("aucun navigateur utilisable — " + first.message.split("\n")[0]);
+    }
+  }
+
+  const server = await startServer();
   const context = await browser.newContext({
     viewport: { width: 1280, height: 900 },
     // « Animations réduites » : les compteurs affichent immédiatement leur

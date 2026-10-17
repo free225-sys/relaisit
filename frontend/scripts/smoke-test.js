@@ -209,6 +209,39 @@ async function main() {
     (await pService.locator('link[rel="canonical"]').getAttribute("href")).endsWith("/support-informatique-abidjan"),
   );
 
+  // Les contrôles ci-dessus passent dans un navigateur : le JavaScript y
+  // réécrit les balises, même sans pré-rendu. Les robots d'aperçu, eux,
+  // n'exécutent rien. Ce dernier bloc lit donc le HTML BRUT, sans navigateur :
+  // c'est le seul contrôle capable de détecter un pré-rendu qui n'a pas eu
+  // lieu, et sans lui la panne est invisible.
+  const rawHtml = (p) =>
+    new Promise((resolve, reject) => {
+      http
+        .get(`${base}${p}`, (res) => {
+          let body = "";
+          res.on("data", (c) => (body += c));
+          res.on("end", () => resolve(body));
+        })
+        .on("error", reject);
+    });
+
+  const rawService = await rawHtml("/support-informatique-abidjan");
+  check(
+    "HTML brut : la page service porte son propre titre (pré-rendu)",
+    /<title>Support informatique à Abidjan/.test(rawService),
+    rawService.includes('<div id="root"></div>') ? "coquille vide : le pré-rendu n'a pas tourné" : "",
+  );
+  check(
+    "HTML brut : la page service porte son propre canonical (pré-rendu)",
+    /<link[^>]+rel="canonical"[^>]+href="[^"]*\/support-informatique-abidjan"/.test(rawService),
+  );
+
+  const rawLegal = await rawHtml("/mentions-legales");
+  check(
+    "HTML brut : les mentions légales portent leur titre (pré-rendu)",
+    /<title>Mentions légales/.test(rawLegal),
+  );
+
   await browser.close();
   server.close();
 
