@@ -1,13 +1,16 @@
 import { motion } from "framer-motion";
+import { reveal } from "@/lib/hydration";
 
 // Reusable fade-in / slide-up reveal wrapper
 export const Reveal = ({ children, delay = 0, y = 24, className = "" }) => (
   <motion.div
     className={className}
-    initial={{ opacity: 0, y }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-80px" }}
-    transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+    {...reveal({
+      initial: { opacity: 0, y },
+      whileInView: { opacity: 1, y: 0 },
+      viewport: { once: true, margin: "-80px" },
+      transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] },
+    })}
   >
     {children}
   </motion.div>
@@ -16,7 +19,7 @@ export const Reveal = ({ children, delay = 0, y = 24, className = "" }) => (
 export const SectionHeading = ({ label, title, description, align = "center" }) => (
   <div className={align === "center" ? "max-w-2xl mx-auto text-center" : "max-w-2xl"}>
     {label && (
-      <span className="text-sm uppercase tracking-[0.2em] font-bold text-brand-orange">
+      <span className="text-sm uppercase tracking-[0.2em] font-bold text-brand-ink">
         {label}
       </span>
     )}

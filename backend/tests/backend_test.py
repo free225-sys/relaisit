@@ -1,151 +1,148 @@
-"""Backend API tests for Relais IT — covers /api/contact CRUD + validations."""
+"""Tests de l'API Relais IT.
+
+Exécution :  cd backend && .venv/bin/python -m pytest tests -q
+La base est simulée en mémoire (mongomock) : aucun MongoDB n'est nécessaire.
+"""
+
 import os
-import uuid
-import pytest
-import requests
-from dotenv import load_dotenv
+import sys
 from pathlib import Path
 
-# Use frontend's REACT_APP_BACKEND_URL (production-style external URL)
-load_dotenv(Path(__file__).resolve().parents[2] / "frontend" / ".env")
-BASE_URL = os.environ["REACT_APP_BACKEND_URL"].rstrip("/")
-API = f"{BASE_URL}/api"
+import pytest
+
+BACKEND_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(BACKEND_DIR))
+
+os.environ.setdefault("MONGO_URL", "mongodb://localhost:27017")
+os.environ.setdefault("DB_NAME", "relaisit_test")
+os.environ.setdefault("ADMIN_PASSWORD", "mot-de-passe-de-test")
+os.environ.setdefault("JWT_SECRET", "secret-de-test")
+os.environ.setdefault("CORS_ORIGINS", "https://relaisit.com")
+
+from fastapi.testclient import TestClient  # noqa: E402
+from mongomock_motor import AsyncMongoMockClient  # noqa: E402
+
+import server  # noqa: E402
+
+VALID = {
+    "nom": "Awa Traoré",
+    "email": "awa@example.com",
+    "telephone": "0747732557",
+    "entreprise": "Cabinet Traoré",
+    "objet": "Contrat de maintenance",
+    "message": "Bonjour, nous avons 12 postes à Cocody et cherchons un contrat de maintenance.",
+}
 
 
-@pytest.fixture(scope="module")
-def session():
-    s = requests.Session()
-    s.headers.update({"Content-Type": "application/json"})
-    return s
+@pytest.fixture()
+def api(monkeypatch):
+    """Client de test avec une base en mémoire et le compteur de débit remis à zéro."""
+    fake_db = AsyncMongoMockClient()["relaisit_test"]
+    monkeypatch.setattr(server, "db", fake_db)
+    server._HITS.clear()
+    with TestClient(server.app) as client:
+        yield client
 
 
-@pytest.fixture(scope="module")
-def created_ids():
-    ids = []
-    yield ids
-    # Cleanup any leftover TEST_ submissions
-    try:
-        for _id in ids:
-            requests.delete(f"{API}/contact/{_id}", timeout=10)
-    except Exception:
-        pass
+def login(api) -> str:
+    res = api.post("/api/admin/login", json={"password": "mot-de-passe-de-test"})
+    assert res.status_code == 200
+    return res.json()["token"]
 
 
-# ---------------- Health ----------------
-class TestHealth:
-    def test_root(self, session):
-        r = session.get(f"{API}/", timeout=15)
-        assert r.status_code == 200
-        body = r.json()
-        assert "message" in body
+# --------------------------------------------------------------------- santé
+def test_health(api):
+    assert api.get("/api/health").json() == {"status": "ok"}
 
 
-# ---------------- Contact POST ----------------
-class TestContactCreate:
-    def test_create_valid(self, session, created_ids):
-        payload = {
-            "nom": f"TEST_User_{uuid.uuid4().hex[:6]}",
-            "email": "test_user@example.com",
-            "telephone": "0700000000",
-            "objet": "TEST_Objet demande de devis",
-            "message": "TEST_Bonjour, je souhaite un devis pour un projet IT.",
-        }
-        r = session.post(f"{API}/contact", json=payload, timeout=15)
-        assert r.status_code == 201, r.text
-        data = r.json()
-        assert "id" in data and isinstance(data["id"], str) and len(data["id"]) > 0
-        assert data["nom"] == payload["nom"]
-        assert data["email"] == payload["email"]
-        assert data["objet"] == payload["objet"]
-        assert data["message"] == payload["message"]
-        assert "created_at" in data
-        # MongoDB internal _id must not leak
-        assert "_id" not in data
-        created_ids.append(data["id"])
-
-    def test_create_missing_nom(self, session):
-        r = session.post(f"{API}/contact", json={
-            "email": "a@b.com", "objet": "x", "message": "y"
-        }, timeout=10)
-        assert r.status_code == 422
-
-    def test_create_missing_email(self, session):
-        r = session.post(f"{API}/contact", json={
-            "nom": "A", "objet": "x", "message": "y"
-        }, timeout=10)
-        assert r.status_code == 422
-
-    def test_create_missing_objet(self, session):
-        r = session.post(f"{API}/contact", json={
-            "nom": "A", "email": "a@b.com", "message": "y"
-        }, timeout=10)
-        assert r.status_code == 422
-
-    def test_create_missing_message(self, session):
-        r = session.post(f"{API}/contact", json={
-            "nom": "A", "email": "a@b.com", "objet": "x"
-        }, timeout=10)
-        assert r.status_code == 422
-
-    def test_create_invalid_email(self, session):
-        r = session.post(f"{API}/contact", json={
-            "nom": "A", "email": "not-an-email", "objet": "x", "message": "y"
-        }, timeout=10)
-        assert r.status_code == 422
+def test_les_routes_status_publiques_sont_supprimees(api):
+    # Ces routes permettaient d'écrire en base sans authentification.
+    assert api.post("/api/status", json={"client_name": "x"}).status_code == 404
+    assert api.get("/api/status").status_code == 404
 
 
-# ---------------- Contact GET (list + sort) ----------------
-class TestContactList:
-    def test_list_returns_array(self, session):
-        r = session.get(f"{API}/contact", timeout=15)
-        assert r.status_code == 200
-        data = r.json()
-        assert isinstance(data, list)
-        for item in data:
-            assert "_id" not in item
-
-    def test_list_sorted_desc_by_created_at(self, session, created_ids):
-        # Insert two more, ensure the latest is first
-        import time
-        p1 = {"nom": "TEST_S1", "email": "s1@example.com", "objet": "TEST_obj", "message": "m"}
-        p2 = {"nom": "TEST_S2", "email": "s2@example.com", "objet": "TEST_obj", "message": "m"}
-        r1 = session.post(f"{API}/contact", json=p1, timeout=10)
-        assert r1.status_code == 201
-        time.sleep(1.1)
-        r2 = session.post(f"{API}/contact", json=p2, timeout=10)
-        assert r2.status_code == 201
-        created_ids.extend([r1.json()["id"], r2.json()["id"]])
-
-        r = session.get(f"{API}/contact", timeout=15)
-        assert r.status_code == 200
-        items = r.json()
-        # Find indices of the two created items
-        idx2 = next((i for i, it in enumerate(items) if it["id"] == r2.json()["id"]), None)
-        idx1 = next((i for i, it in enumerate(items) if it["id"] == r1.json()["id"]), None)
-        assert idx2 is not None and idx1 is not None
-        # idx2 (newer) should appear before idx1 (older) in desc-sorted list
-        assert idx2 < idx1, f"Expected newer item first, got idx2={idx2}, idx1={idx1}"
+# ------------------------------------------------------------------- contact
+def test_soumission_valide(api):
+    res = api.post("/api/contact", json=VALID)
+    assert res.status_code == 201
+    assert res.json()["ok"] is True
 
 
-# ---------------- Contact DELETE ----------------
-class TestContactDelete:
-    def test_delete_existing(self, session, created_ids):
-        payload = {"nom": "TEST_Del", "email": "del@example.com", "objet": "TEST_obj", "message": "m"}
-        r = session.post(f"{API}/contact", json=payload, timeout=10)
-        assert r.status_code == 201
-        _id = r.json()["id"]
+def test_email_invalide_refuse(api):
+    res = api.post("/api/contact", json={**VALID, "email": "pas-un-email"})
+    assert res.status_code == 422
 
-        r_del = session.delete(f"{API}/contact/{_id}", timeout=10)
-        assert r_del.status_code == 200
-        body = r_del.json()
-        assert body.get("deleted") is True
-        assert body.get("id") == _id
 
-        # Verify removal: subsequent delete returns 404
-        r_again = session.delete(f"{API}/contact/{_id}", timeout=10)
-        assert r_again.status_code == 404
+def test_message_trop_court_refuse(api):
+    res = api.post("/api/contact", json={**VALID, "message": "court"})
+    assert res.status_code == 422
 
-    def test_delete_unknown_returns_404(self, session):
-        unknown = f"nonexistent-{uuid.uuid4()}"
-        r = session.delete(f"{API}/contact/{unknown}", timeout=10)
-        assert r.status_code == 404
+
+def test_champ_leurre_rejette_silencieusement(api):
+    res = api.post("/api/contact", json={**VALID, "site_web": "http://spam.example"})
+    assert res.status_code == 201
+    token = login(api)
+    listed = api.get("/api/contact", headers={"Authorization": f"Bearer {token}"})
+    assert listed.json() == []  # rien n'a été stocké
+
+
+def test_limite_de_debit_sur_le_formulaire(api):
+    for _ in range(5):
+        assert api.post("/api/contact", json=VALID).status_code == 201
+    trop = api.post("/api/contact", json=VALID)
+    assert trop.status_code == 429
+    assert "Retry-After" in trop.headers
+
+
+# --------------------------------------------------------------------- admin
+def test_mot_de_passe_incorrect(api):
+    assert api.post("/api/admin/login", json={"password": "faux"}).status_code == 401
+
+
+def test_limite_de_debit_sur_la_connexion_admin(api):
+    for _ in range(5):
+        api.post("/api/admin/login", json={"password": "faux"})
+    assert api.post("/api/admin/login", json={"password": "faux"}).status_code == 429
+    # Le bon mot de passe est lui aussi bloqué : c'est le but d'un verrou anti-force brute.
+    assert api.post("/api/admin/login", json={"password": "mot-de-passe-de-test"}).status_code == 429
+
+
+def test_routes_protegees_sans_jeton(api):
+    assert api.get("/api/contact").status_code == 401
+    assert api.get("/api/admin/me").status_code == 401
+    assert api.delete("/api/contact/nimporte-quoi").status_code == 401
+
+
+def test_jeton_invalide_refuse(api):
+    assert api.get("/api/contact", headers={"Authorization": "Bearer faux"}).status_code == 401
+
+
+def test_parcours_complet_admin(api):
+    api.post("/api/contact", json=VALID)
+    token = login(api)
+    auth = {"Authorization": f"Bearer {token}"}
+
+    assert api.get("/api/admin/me", headers=auth).json() == {"authenticated": True}
+
+    items = api.get("/api/contact", headers=auth).json()
+    assert len(items) == 1
+    assert items[0]["nom"] == "Awa Traoré"
+    assert items[0]["entreprise"] == "Cabinet Traoré"
+
+    submission_id = items[0]["id"]
+    assert api.delete(f"/api/contact/{submission_id}", headers=auth).status_code == 200
+    assert api.get("/api/contact", headers=auth).json() == []
+    assert api.delete(f"/api/contact/{submission_id}", headers=auth).status_code == 404
+
+
+# ----------------------------------------------------------------------- CORS
+def test_cors_ne_transmet_jamais_les_identifiants():
+    origines, credentials = server._cors_settings()
+    assert credentials is False
+    assert origines == ["https://relaisit.com"]
+
+
+def test_cors_joker_desactive_les_identifiants(monkeypatch):
+    monkeypatch.setenv("CORS_ORIGINS", "*")
+    origines, credentials = server._cors_settings()
+    assert credentials is False

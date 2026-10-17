@@ -18,8 +18,22 @@ module.exports = {
                                 deep: '#102D40',
                         },
                         brand: {
+                                // Orange de marque. Réservé aux aplats décoratifs, aux icônes et
+                                // au texte posé sur fond navy (4,75:1 sur #102D40 : conforme).
                                 orange: '#E8743B',
                                 orangeDark: '#D06530',
+
+                                // Variantes accessibles de la même teinte (H 20°), pour tout ce qui
+                                // porte du texte. #E8743B ne donne que 3,00:1 avec du blanc comme
+                                // avec du texte foncé : insuffisant face au seuil WCAG AA de 4,5:1.
+                                //   cta     — fond des boutons à texte blanc      (4,66:1)
+                                //   ctaDark — survol de ces mêmes boutons         (6,04:1)
+                                //   ink     — libellés orange sur fond clair      (4,66:1)
+                                //   light   — libellés orange sur fond navy       (4,50:1 sur #1B4C6B)
+                                cta: '#C45017',
+                                ctaDark: '#A8430F',
+                                ink: '#C45017',
+                                light: '#F0A47F',
                         },
                         background: 'hsl(var(--background))',
                         foreground: 'hsl(var(--foreground))',

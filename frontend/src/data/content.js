@@ -44,13 +44,32 @@ export const FORMATIONS = [
   { icon: "MonitorSmartphone", title: "Outils numériques professionnels", desc: "Adopter les outils digitaux métiers." },
 ];
 
+// Un seul numéro, décliné pour chaque usage : téléphone affiché, lien d'appel
+// et WhatsApp partent tous du même. Pour en changer, modifiez PHONE_NATIONAL et
+// PHONE_E164 — le reste suit.
+const PHONE_NATIONAL = "07 47 73 25 57";
+const PHONE_E164 = "2250747732557";
+
 export const CONTACT = {
-  phone: "07 47 73 25 57",
+  phone: PHONE_NATIONAL,
   email: "contact@relaisit.com",
   location: "Abidjan, Côte d'Ivoire",
-  tel: "tel:+2250747732557",
+  tel: `tel:+${PHONE_E164}`,
   mailto: "mailto:contact@relaisit.com",
-  whatsapp: "https://wa.me/2250161319782",
+  whatsapp: `https://wa.me/${PHONE_E164}`,
 };
 
-export const LOGO_URL = "/logo-relais.png";
+// Informations affichées dans les mentions légales.
+// ⚠️ Les valeurs marquées « À COMPLÉTER » doivent être renseignées avant
+// publication : elles sont obligatoires pour un site professionnel.
+export const LEGAL = {
+  raisonSociale: "Relais IT",
+  formeJuridique: "À COMPLÉTER (SARL, SAS, entreprise individuelle…)",
+  capital: "À COMPLÉTER",
+  rccm: "À COMPLÉTER (numéro RCCM)",
+  siege: "À COMPLÉTER (adresse complète du siège, Abidjan)",
+  directeurPublication: "À COMPLÉTER (nom du représentant légal)",
+  hebergeur: "À COMPLÉTER (nom et adresse de l'hébergeur du site)",
+};
+
+export const LOGO_URL = "/logo-relais.webp";

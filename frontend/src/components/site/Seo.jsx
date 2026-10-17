@@ -25,13 +25,19 @@ const setCanonical = (href) => {
 /**
  * Gère title, description, canonical, Open Graph et JSON-LD par page.
  * Sans dépendance externe (pas de react-helmet).
+ *
+ * Important : ces balises sont écrites par JavaScript. Les robots d'aperçu de
+ * WhatsApp, LinkedIn ou Facebook n'exécutent pas JavaScript — c'est le
+ * pré-rendu au build (react-snap, voir `npm run build`) qui fige le résultat
+ * dans le HTML livré et rend ces balises visibles pour eux.
  */
-export const Seo = ({ title, description, path = "/", jsonLd = null }) => {
+export const Seo = ({ title, description, path = "/", jsonLd = null, noindex = false }) => {
   useEffect(() => {
     const url = `${SITE_URL}${path}`;
 
     document.title = title;
     setMeta("name", "description", description);
+    setMeta("name", "robots", noindex ? "noindex, follow" : "index, follow");
     setMeta("property", "og:title", title);
     setMeta("property", "og:description", description);
     setMeta("property", "og:url", url);
@@ -50,7 +56,7 @@ export const Seo = ({ title, description, path = "/", jsonLd = null }) => {
       document.head.appendChild(script);
     }
     return () => document.getElementById(SCRIPT_ID)?.remove();
-  }, [title, description, path, jsonLd]);
+  }, [title, description, path, jsonLd, noindex]);
 
   return null;
 };

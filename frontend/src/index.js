@@ -1,23 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@/index.css";
 import App from "@/App";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60_000,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+// react-query était initialisé ici sans qu'aucun composant ne l'utilise :
+// ~80 ko de sources embarqués pour rien. À réintroduire le jour où le site
+// consommera réellement des données distantes.
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
+const container = document.getElementById("root");
+
+// `hydrateRoot` lorsque la page a été pré-rendue au build (react-snap),
+// `createRoot` en développement. Sans cela, React jette le HTML pré-rendu et
+// on perd le bénéfice du pré-rendu.
+const app = (
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </React.StrictMode>,
+    <App />
+  </React.StrictMode>
 );
+
+if (container.hasChildNodes()) {
+  ReactDOM.hydrateRoot(container, app);
+} else {
+  ReactDOM.createRoot(container).render(app);
+}

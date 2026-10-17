@@ -1,0 +1,50 @@
+# Déploiement Netlify — site vitrine Relais IT
+#
+# Le dépôt contient aussi un back-end Python ; Netlify ne construit que le
+# dossier `frontend/`. Le formulaire de contact affiche une invitation à
+# appeler ou à écrire sur WhatsApp tant qu'aucune API n'est reliée.
+#
+# Pour brancher l'API plus tard : Site settings → Environment variables →
+#   REACT_APP_BACKEND_URL = https://votre-api.exemple.com
+# puis redéployer. Pensez à ajouter le domaine Netlify dans le `CORS_ORIGINS`
+# du back-end.
+
+[build]
+  base = "frontend"
+  publish = "build"
+  # `playwright install chromium` est nécessaire au pré-rendu : sans lui, les
+  # aperçus WhatsApp/LinkedIn et les balises par page ne sont pas générés.
+  command = "npm ci && npx playwright install chromium && npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # Installe Chromium dans node_modules, que Netlify met en cache d'un build
+  # à l'autre — sinon il est retéléchargé à chaque déploiement.
+  PLAYWRIGHT_BROWSERS_PATH = "0"
+  # Les avertissements de compilation ne doivent pas faire échouer le build.
+  CI = "false"
+
+# Aucune redirection attrape-tout n'est déclarée volontairement.
+# Chaque page publique existe comme fichier statique (`build/<route>/index.html`)
+# grâce au pré-rendu : Netlify les sert directement, et renvoie `404.html` avec
+# un vrai code HTTP 404 pour les adresses inconnues. Une règle `/* /index.html 200`
+# annulerait ces deux comportements.
+
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

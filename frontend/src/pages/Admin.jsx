@@ -34,7 +34,7 @@ const AdminLogin = ({ onLogin }) => {
       <div className="w-full max-w-sm rounded-2xl border border-slate-100 bg-white p-8 shadow-sm">
         <img src={LOGO_URL} alt="Relais IT" className="h-10 w-auto object-contain mx-auto" />
         <h1 className="mt-6 text-lg font-semibold text-navy text-center flex items-center justify-center gap-2">
-          <Lock size={18} className="text-brand-orange" /> Espace administration
+          <Lock size={18} className="text-brand-ink" /> Espace administration
         </h1>
         <p className="mt-1 text-sm text-slate-500 text-center">Accès protégé par mot de passe.</p>
         <form onSubmit={submit} className="mt-6 space-y-4">
@@ -44,8 +44,7 @@ const AdminLogin = ({ onLogin }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Mot de passe"
-            autoFocus
-            className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm text-navy focus:outline-none focus:ring-2 focus:ring-brand-orange/40 focus:border-brand-orange"
+            className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm text-navy focus:outline-none focus:ring-2 focus:ring-brand-cta/40 focus:border-brand-cta"
           />
           {error && <p data-testid="admin-login-error" className="text-sm text-red-500">{error}</p>}
           <button
@@ -148,7 +147,7 @@ export default function Admin() {
       <main className="max-w-6xl mx-auto px-6 py-10">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-semibold text-navy flex items-center gap-3">
-            <Inbox size={26} className="text-brand-orange" /> Demandes de contact
+            <Inbox size={26} className="text-brand-ink" /> Demandes de contact
           </h1>
           <span className="rounded-full bg-navy/5 px-3 py-1 text-sm font-medium text-navy">{items.length} demande(s)</span>
         </div>
@@ -170,7 +169,7 @@ export default function Admin() {
                   <div>
                     <div className="flex items-center gap-3">
                       <h3 className="text-lg font-semibold text-navy">{it.nom}</h3>
-                      <span className="text-xs text-slate-400">{fmt(it.created_at)}</span>
+                      <span className="text-xs text-slate-500">{fmt(it.created_at)}</span>
                     </div>
                     <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm text-slate-500">
                       <span className="flex items-center gap-1.5"><Mail size={14} /> {it.email}</span>
@@ -181,7 +180,7 @@ export default function Admin() {
                     <Trash2 size={15} /> Supprimer
                   </button>
                 </div>
-                <p className="mt-3 text-sm font-medium text-brand-orange">{it.objet}</p>
+                <p className="mt-3 text-sm font-medium text-brand-ink">{it.objet}</p>
                 <p className="mt-1 text-sm leading-relaxed text-slate-600 whitespace-pre-wrap">{it.message}</p>
               </div>
             ))}

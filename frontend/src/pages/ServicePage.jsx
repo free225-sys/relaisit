@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { useParams, Link, Navigate } from "react-router-dom";
-import * as Icons from "lucide-react";
+import { useParams, Link } from "react-router-dom";
+import { Icons } from "@/lib/icons";
+import NotFound from "@/pages/NotFound";
 import { motion } from "framer-motion";
+import { reveal } from "@/lib/hydration";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
@@ -25,7 +27,7 @@ const FaqItem = ({ q, a, index }) => {
         <span className="text-base font-semibold text-navy">{q}</span>
         <Icons.ChevronDown
           size={20}
-          className={`shrink-0 text-brand-orange transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          className={`shrink-0 text-brand-ink transition-transform duration-300 ${open ? "rotate-180" : ""}`}
         />
       </button>
       {open && (
@@ -39,7 +41,9 @@ export default function ServicePage() {
   const { slug } = useParams();
   const page = SERVICE_PAGES[slug];
 
-  if (!page) return <Navigate to="/" replace />;
+  // Slug inconnu : vraie page 404 en `noindex`, plutôt qu'une redirection
+  // silencieuse vers l'accueil qui répondait 200 (« soft 404 »).
+  if (!page) return <NotFound />;
 
   const Icon = Icons[page.icon] || Icons.Circle;
   const otherPages = SERVICE_PAGE_LINKS.filter((p) => p.slug !== slug);
@@ -86,7 +90,6 @@ export default function ServicePage() {
       <main>
         {/* Bandeau d'en-tête navy */}
         <section className="relative overflow-hidden bg-navy-deep pt-28 pb-14 sm:pt-32 sm:pb-16">
-          <div className="pointer-events-none absolute -top-20 right-0 h-72 w-72 rounded-full bg-brand-orange/15 blur-3xl" />
           <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
             <nav aria-label="Fil d'Ariane" className="text-xs text-slate-400">
               <Link to="/" className="hover:text-brand-orange transition-colors">Accueil</Link>
@@ -94,9 +97,11 @@ export default function ServicePage() {
               <span className="text-slate-300">{page.h1}</span>
             </nav>
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              {...reveal({
+                initial: { opacity: 0, y: 24 },
+                animate: { opacity: 1, y: 0 },
+                transition: { duration: 0.6 },
+              })}
               className="mt-6 flex items-start gap-5"
             >
               <div className="hidden sm:flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-brand-orange">
@@ -138,7 +143,7 @@ export default function ServicePage() {
                 <ul className="mt-5 grid gap-3 sm:grid-cols-2">
                   {page.prestations.map((p) => (
                     <li key={p} className="flex items-start gap-3 rounded-xl bg-slate-50 p-4">
-                      <Icons.CheckCircle2 size={19} strokeWidth={1.5} className="mt-0.5 shrink-0 text-brand-orange" />
+                      <Icons.CheckCircle2 size={19} strokeWidth={1.5} className="mt-0.5 shrink-0 text-brand-ink" />
                       <span className="text-sm leading-relaxed text-slate-700">{p}</span>
                     </li>
                   ))}
@@ -169,7 +174,7 @@ export default function ServicePage() {
                     <Link
                       to="/#contact"
                       data-testid="service-cta-devis"
-                      className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-orange px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-brand-orangeDark hover:-translate-y-0.5"
+                      className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-cta px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-brand-ctaDark hover:-translate-y-0.5"
                     >
                       Demander un devis
                       <Icons.ArrowRight size={17} />
@@ -205,7 +210,7 @@ export default function ServicePage() {
                             to={`/${p.slug}`}
                             className="group flex items-center gap-3 text-sm font-medium text-slate-600 hover:text-navy transition-colors"
                           >
-                            <PIcon size={17} strokeWidth={1.5} className="shrink-0 text-brand-orange" />
+                            <PIcon size={17} strokeWidth={1.5} className="shrink-0 text-brand-ink" />
                             <span className="group-hover:underline underline-offset-4">{p.label}</span>
                           </Link>
                         </li>

@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#1B4C6B" />
         <meta name="description" content="Relais IT accompagne les entreprises, institutions et professionnels avec des solutions informatiques fiables : support IT, matériel, réseaux, sécurité, solutions digitales et formations à Abidjan." />
-        <meta name="keywords" content="Relais IT, solutions informatiques Abidjan, support informatique Abidjan, maintenance informatique entreprise, fournisseur matériel informatique Côte d'Ivoire, formation informatique Abidjan, formation intelligence artificielle Côte d'Ivoire, réseau et sécurité informatique, conseil IT entreprise" />
         <meta name="author" content="Relais IT" />
         <meta name="robots" content="index, follow" />
         <meta name="google-site-verification" content="jNN4qvQkKMSFWD3ZabxVylBXuYJEnzdjvI_hZMmfrtQ" />
@@ -15,6 +14,7 @@
         <link rel="icon" href="%PUBLIC_URL%/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon.png" />
         <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
+        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
         <!-- Open Graph -->
         <meta property="og:title" content="Relais IT — Votre partenaire IT de confiance" />
@@ -34,35 +34,37 @@
         <meta name="twitter:description" content="Des solutions informatiques fiables, simples et adaptées pour les entreprises à Abidjan." />
         <meta name="twitter:image" content="https://relaisit.com/og-image.png" />
         <meta name="twitter:image:alt" content="Logo Relais IT — Trust it." />
+
+        <!--
+        Ces balises Open Graph sont celles de l'accueil. Chaque page réécrit les
+        siennes au moment du pré-rendu (voir `npm run build`) : c'est ce qui rend
+        les aperçus corrects sur WhatsApp, LinkedIn et Facebook, dont les robots
+        n'exécutent pas JavaScript.
+        -->
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-        <!--
-        manifest.json provides metadata used when your web app is installed on a
-        user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-        -->
-        <!--
-        Notice the use of %PUBLIC_URL% in the tags above.
-        It will be replaced with the URL of the `public` folder during the build.
-        Only files inside the `public` folder can be referenced from the HTML.
 
-        Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-        work correctly both with client-side routing and a non-root public URL.
-        Learn how to configure a non-root public URL by running `npm run build`.
-        -->
+        <!-- Fond du hero : affiché immédiatement, avant même le chargement de la vidéo. -->
+        <link rel="preload" as="image" href="%PUBLIC_URL%/hero-poster.webp" fetchpriority="high" />
+
         <title>Relais IT — Solutions informatiques, support IT &amp; formation à Abidjan</title>
+
         <script type="application/ld+json">
         {
           "@context": "https://schema.org",
           "@type": "ProfessionalService",
           "name": "Relais IT",
           "slogan": "Trust it.",
-          "description": "Relais IT provides IT support, hardware supply, network and security services, digital solutions, consulting and professional training.",
+          "description": "Relais IT fournit support informatique, matériel, réseaux et sécurité, solutions digitales, conseil IT et formations professionnelles aux entreprises d'Abidjan.",
           "url": "https://relaisit.com/",
           "image": "https://relaisit.com/og-image.png",
           "logo": "https://relaisit.com/logo-relais.png",
           "telephone": "+2250747732557",
           "email": "contact@relaisit.com",
+          "priceRange": "$$",
+          "currenciesAccepted": "XOF",
           "areaServed": {
             "@type": "City",
             "name": "Abidjan",
@@ -73,26 +75,36 @@
             "addressLocality": "Abidjan",
             "addressCountry": "CI"
           },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              "opens": "08:00",
+              "closes": "18:00"
+            }
+          ],
           "sameAs": []
         }
         </script>
+
         <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>
-        <script src="https://assets.emergent.sh/scripts/emergent-main.js"></script>
     </head>
     <body>
-        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <noscript>
+            Relais IT — solutions informatiques à Abidjan. Activez JavaScript pour la
+            version interactive du site, ou contactez-nous au +225 07 47 73 25 57.
+        </noscript>
         <div id="root"></div>
+
         <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+        Mesure d'audience PostHog.
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-       
+        `session_recording` a été désactivé : il rejouait la navigation des
+        visiteurs (mouvements de souris, clics, saisies) sans consentement, ce
+        qui relève de la loi n° 2013-450 sur la protection des données à
+        caractère personnel et, pour les visiteurs européens, du RGPD.
+        Ne le réactivez qu'avec un bandeau de consentement explicite.
+        -->
         <script>
             !(function (t, e) {
                 var o, n, p, r;
@@ -157,11 +169,10 @@
             })(document, window.posthog || []);
             posthog.init("phc_xAvL2Iq4tFmANRE7kzbKwaSqp1HJjN7x48s3vr0CMjs", {
                 api_host: "https://us.i.posthog.com",
-                person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well,
-                session_recording: {
-                    recordCrossOriginIframes: true,
-                    capturePerformance: false,
-                },
+                person_profiles: "identified_only",
+                disable_session_recording: true,
+                capture_pageview: true,
+                autocapture: false,
             });
         </script>
     </body>
