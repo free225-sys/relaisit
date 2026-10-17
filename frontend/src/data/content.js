@@ -60,15 +60,17 @@ export const CONTACT = {
 };
 
 // Informations affichées dans les mentions légales.
-// ⚠️ Les valeurs marquées « À COMPLÉTER » doivent être renseignées avant
-// publication : elles sont obligatoires pour un site professionnel.
+// Source : déclaration fiscale d'existence (modèle D 1020), DGI Côte d'Ivoire,
+// visa du 11 mars 2026.
+// ⚠️ `hebergeur` reste à renseigner : il dépend de l'hébergement retenu.
 export const LEGAL = {
   raisonSociale: "Relais IT",
-  formeJuridique: "À COMPLÉTER (SARL, SAS, entreprise individuelle…)",
-  capital: "À COMPLÉTER",
-  rccm: "À COMPLÉTER (numéro RCCM)",
-  siege: "À COMPLÉTER (adresse complète du siège, Abidjan)",
-  directeurPublication: "À COMPLÉTER (nom du représentant légal)",
+  formeJuridique: "SARL unipersonnelle",
+  capital: "1 000 000 FCFA",
+  rccm: "CI-ABJ-03-2025-B13-13430, délivré le 15 décembre 2025 par le CEPICI",
+  siege:
+    "Riviera Palmeraie, lot 2145, îlot 05 — Cocody, Abidjan, Côte d'Ivoire",
+  directeurPublication: "Guei Kamonda Wilfried, gérant",
   hebergeur: "À COMPLÉTER (nom et adresse de l'hébergeur du site)",
 };
 
